@@ -112,29 +112,52 @@ The latter links can be used for OTA upgrades too like ``OtaUrl https://ota.tasm
 
 [Complete list](BUILDS.md) of available feature and sensors.
 
-## Changelog v15.6.0.1
+## Changelog v15.6.0.2
 ### Added
-- DALI-2 input device event messages (IEC 62386-103) from push buttons, occupancy and light sensors decoded and published for rules and MQTT
-- DALI-2 control device commissioning and instance queries with commands `DaliDeviceScan` and `DaliDevice`
 - Support for GUI tooltip on touch media like phones and tablets
 - Support for TFA Dostmann Marbella 868MHz pool thermometer using a CC1101 [#24959](https://github.com/arendst/Tasmota/issues/24959)
-- MiEL HVAC climate control panel on the web UI main page (mode, target temperature, fan, vanes, air direction) with live state [#24984](https://github.com/arendst/Tasmota/issues/24984)
+- Support for MI32 Xiaomi Mi Body Composition Scale (MIBCS/MIBFS) [#25049](https://github.com/arendst/Tasmota/issues/25049)
+- MQTT 5.0 with focus on request/response (optional) [#25050](https://github.com/arendst/Tasmota/issues/25050)
+- RC522 throttle idle polling and add self-healing watchdog [#25052](https://github.com/arendst/Tasmota/issues/25052)
 - NeoPool AuxMode [#24998](https://github.com/arendst/Tasmota/issues/24998)
-- MiEL HVAC Modbus RTU slave on a second RS485 port exposing all states and functions for PLC use with `#define USE_MIEL_HVAC_MODBUS_SLAVE` [#24982](https://github.com/arendst/Tasmota/issues/24982)
+- DALI-2 input device event messages (IEC 62386-103) from push buttons, occupancy and light sensors decoded and published for rules and MQTT [#25029](https://github.com/arendst/Tasmota/issues/25029)
+- DALI-2 control device commissioning and instance queries with commands `DaliDeviceScan` and `DaliDevice` [#25029](https://github.com/arendst/Tasmota/issues/25029)
+- DALI-2 push button bindings to control gear targets with command `DaliBind` (toggle, on, off, up, down) [#25073](https://github.com/arendst/Tasmota/issues/25073)
+- MiELHVAC climate control panel on the web UI main page (mode, target temperature, fan, vanes, air direction) with live state [#24984](https://github.com/arendst/Tasmota/issues/24984)
+- MiELHVAC Modbus RTU slave on a second RS485 port exposing all states and functions for PLC use with `#define USE_MIEL_HVAC_MODBUS_SLAVE` [#24982](https://github.com/arendst/Tasmota/issues/24982)
+- MiELHVAC Home Assistant MQTT discovery [#25027](https://github.com/arendst/Tasmota/issues/25027)
 - Berry virtual button support
 - Berry `sortedmap` support for `json.dump` [#24999](https://github.com/arendst/Tasmota/issues/24999)
+- Matter Electrical Power Measurement cluster to On/Off Plug-in Unit [#24922](https://github.com/arendst/Tasmota/issues/24922)
+- Matter Soil Sensor device type with Soil Measurement cluster (Matter 1.6.0) [#25088](https://github.com/arendst/Tasmota/issues/25088)
+- Matter physical and virtual Garage Door device types with Closure Control cluster (Matter 1.6.0) [#25089](https://github.com/arendst/Tasmota/issues/25089)
 
 ### Breaking Changed
 
 ### Changed
+- ESP8266 platform update from 2026.04.00 to 2026.09.00 [#25072](https://github.com/arendst/Tasmota/issues/25072)
+- ESP32 Platform from 2026.05.50 to 2026.09.50, Framework (Arduino Core) from v3.3.8 to v3.3.12 and IDF from v5.5.4.260407 to v5.5.5 [#25072](https://github.com/arendst/Tasmota/issues/25072)
+- Matter update specs to 1.6.1 (to be used by AI) [#25083](https://github.com/arendst/Tasmota/issues/25083)
+- MQTT connection closed before TCP retransmission could deliver a delayed PINGRESP, now tolerates 2 unanswered pings [#25067](https://github.com/arendst/Tasmota/issues/25067)
+- Command `SetOption46 201..255` init wait 1 to 55 seconds instead of 2010 to 2550 msec [#25035](https://github.com/arendst/Tasmota/issues/25035)
+- IR accept raw data in JSON [#25077](https://github.com/arendst/Tasmota/issues/25077)
+- Shutter split `EnableEndStopTime` into `OpenEndStopTime` and `CloseEndStopTime` [#25020](https://github.com/arendst/Tasmota/issues/25020)
+- MiELHVAC accepts `fan_only` as an alias for fan mode in `HVACSetMode` / `HVACSetHAMode` (Home Assistant) [#24992](https://github.com/arendst/Tasmota/issues/24992)
 - BLE MI32 display icons instead of data lines. disable by removing `#define USE_SENSOR_ICON`
 - BLE EQ3-TRV code refactoring [#24978](https://github.com/arendst/Tasmota/issues/24978)
 
 ### Fixed
 - Restore default hostname `%s` functionality using topic name only, regression from v15.4.0.2 [#24731](https://github.com/arendst/Tasmota/issues/24731)
-- MiEL HVAC Modbus length-based framing, queue writes, FC03 sensor mirror [#24993](https://github.com/arendst/Tasmota/issues/24993)
+- MQTT false connected events when unconfigured [#25100](https://github.com/arendst/Tasmota/issues/25100)
+- OpenTherm support the second heating circuit (CH2) [#25098](https://github.com/arendst/Tasmota/issues/25098)
+- Touch GT911 fix template [#25068](https://github.com/arendst/Tasmota/issues/25068)
+- MiELHVAC Modbus length-based framing, queue writes, FC03 sensor mirror [#24993](https://github.com/arendst/Tasmota/issues/24993)
+- WT32_ETH01 ethernet initialization [#25051](https://github.com/arendst/Tasmota/issues/25051)
+- ESP32 release UART0 console when the template uses its pins [#25047](https://github.com/arendst/Tasmota/issues/25047)
 - Zigbee deferred timer use after free, and the truncated backtrace that hid it [#24979](https://github.com/arendst/Tasmota/issues/24979)
 - Berry rare register allocation bug [#25010](https://github.com/arendst/Tasmota/issues/25010)
 - Matter autoconfiguration after configuration reset [#24997](https://github.com/arendst/Tasmota/issues/24997)
+- Matter commissioning mDNS announcements [#25069](https://github.com/arendst/Tasmota/issues/25069)
+- Matter non-bridge endpoint topology [#25099](https://github.com/arendst/Tasmota/issues/25099)
 
 ### Removed
