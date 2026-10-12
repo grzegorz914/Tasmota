@@ -31,7 +31,7 @@
 #ifdef USE_BLE_ESP32
 
 #ifdef ESP32                       // ESP32 family only. Use define USE_HM10 for ESP8266 support
-#if CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32C2 || CONFIG_IDF_TARGET_ESP32C3 || CONFIG_IDF_TARGET_ESP32C5 || CONFIG_IDF_TARGET_ESP32C6 || CONFIG_IDF_TARGET_ESP32S3
+#if CONFIG_IDF_TARGET_ESP32 || CONFIG_IDF_TARGET_ESP32C2 || CONFIG_IDF_TARGET_ESP32C3 || CONFIG_IDF_TARGET_ESP32C5 || CONFIG_IDF_TARGET_ESP32C6 || CONFIG_IDF_TARGET_ESP32C61 || CONFIG_IDF_TARGET_ESP32S3 || CONFIG_IDF_TARGET_ESP32S31
 
 #ifdef USE_MI_ESP32
 
@@ -2990,14 +2990,7 @@ void MI32notifyHT_LY(int _slot, char *_buf, int len){
     if (MIBLEsensors[_slot].type == MI_LYWSD02MMC || MIBLEsensors[_slot].type == MI_LYWSD02MMC2 || MIBLEsensors[_slot].type == MI_LYWSD03MMC || MIBLEsensors[_slot].type == MI_MHOC401){
       // ok, so CR2032 is 3.0v, but drops immediately to ~2.9.
       // so we'll go with the 2.1 min, 2.95 max.
-      float minVolts = 2100.0;
-      //float maxVolts = 2950.0;
-      //float range = maxVolts - minVolts;
-      //float divisor = range/100; // = 8.5
-      float percent = (((float)LYWSD0x_HT.volt) - minVolts) / 8.5; //divisor;
-      if (percent > 100) percent = 100;
-
-      MIBLEsensors[_slot].bat = (int)percent;
+      MIBLEsensors[_slot].bat = changeUIntScale(LYWSD0x_HT.volt, 2100, 2950, 0, 100);
       MIBLEsensors[_slot].batLastSeen = Rtc.local_time;
       MIBLEsensors[_slot].lastTime = Rtc.local_time;
       AddLog(BLE_ESP32::BLELogLevel[LOG_LEVEL_DEBUG_MORE], PSTR("M32: %s: LYWSD0x Bat updated %d"), MIaddrStr(MIBLEsensors[_slot].MAC), MIBLEsensors[_slot].bat);
@@ -4286,10 +4279,6 @@ const char SI_WEB_CSS[] PROGMEM =
   ".itd td:last-child{width:45px}"
   ".itd .bt{margin-right:10px;}" // Margin right should be half of the not-first width
   ".itr{line-height:20px}"
-  // Signal Strength Indicator
-  ".si{display:inline-flex;align-items:flex-end;height:15px;padding:0;"
-  "i{width:3px;margin-right:1px;border-radius:3px;background-color:var(--c_txt)}"
-  ".b0{height:25%%}.b1{height:50%%}.b2{height:75%%}.b3{height:100%%}}.o30{opacity:.3}"
   "</style>"
   "{t}";             // ... and open new table for devices
 
